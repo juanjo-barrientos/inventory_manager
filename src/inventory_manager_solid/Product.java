@@ -1,19 +1,31 @@
-
 package inventory_manager_solid;
 
+import java.util.UUID;
+
 public class Product {
-  
-  public String name;
-  public double price;
-  public int stock;
+
+    private String id;
+    private String name;
+    private double price;
+    private int stock;
 
     public Product(String name, double price, int stock) {
+
+        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.price = price;
         this.stock = stock;
     }
 
     public Product() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,5 +51,5 @@ public class Product {
     public void setStock(int stock) {
         this.stock = stock;
     }
-  
+
 }
