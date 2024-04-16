@@ -29,23 +29,22 @@ public class Inventory {
     }
 
     public Product deleteProduct(String name) {
-        
+
         Product deleteProduct = findProduct(name);
         this.inventoryList = filterProducts(name);
         return deleteProduct;
     }
-    
+
     public Product deleteProduct(String id, boolean a) {
-        
+
         Product deleteProduct = findProduct(id, a);
         this.inventoryList = filterProducts(id, a);
         return deleteProduct;
     }
 
-    public Product updateProduct(String name, Product newPd) {
-        Product pd = findProduct(name);
-        pd = newPd;
-        return pd;
+    public Product updateProduct(int index, Product newPd) {
+        this.inventoryList.set(index, newPd);
+        return newPd;
     }
 
     public ArrayList<Product> filterProducts(String name) {
@@ -56,7 +55,7 @@ public class Inventory {
 
         return (ArrayList<Product>) pd;
     }
-    
+
     public ArrayList<Product> filterProducts(String id, boolean a) {
 
         List<Product> pd = inventoryList.stream()
@@ -66,23 +65,30 @@ public class Inventory {
         return (ArrayList<Product>) pd;
     }
 
-
     public Product findProduct(String name) {
 
         List<Product> pd = inventoryList.stream()
                 .filter(product -> product.getName().equals(name))
                 .collect(Collectors.toList());
 
-        return pd.get(0);
+        if (pd != null && pd.isEmpty() == false) {
+            return pd.get(0);
+        }
+
+        return null;
     }
-    
+
     public Product findProduct(String id, boolean a) {
 
         List<Product> pd = inventoryList.stream()
                 .filter(product -> product.getId().equals(id))
                 .collect(Collectors.toList());
 
-        return pd.get(0);
+        if (pd != null && pd.isEmpty() == false) {
+            return pd.get(0);
+        }
+
+        return null;
     }
 
 }

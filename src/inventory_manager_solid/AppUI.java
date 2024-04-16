@@ -1,6 +1,5 @@
 package inventory_manager_solid;
 
-import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class AppUI extends javax.swing.JFrame {
@@ -30,8 +29,8 @@ public class AppUI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableInv = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        searchField = new javax.swing.JTextField();
+        searchBtn = new javax.swing.JButton();
         nameField = new javax.swing.JTextField();
         priceField = new javax.swing.JTextField();
         stockField = new javax.swing.JTextField();
@@ -64,13 +63,18 @@ public class AppUI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tableInv);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchFieldActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Search");
+        searchBtn.setText("Search");
+        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -82,9 +86,9 @@ public class AppUI extends javax.swing.JFrame {
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addComponent(searchBtn)
                 .addGap(23, 23, 23))
         );
         jPanel1Layout.setVerticalGroup(
@@ -92,8 +96,8 @@ public class AppUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(40, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(searchField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchBtn))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
@@ -123,6 +127,11 @@ public class AppUI extends javax.swing.JFrame {
 
         updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         updateBtn.setText("Update");
+        updateBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateBtnActionPerformed(evt);
+            }
+        });
 
         addBtn.setBackground(new java.awt.Color(102, 153, 0));
         addBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -197,17 +206,34 @@ public class AppUI extends javax.swing.JFrame {
             obj[3] = product.getStock();
             tableModel.addRow(obj);
         });
-
     }
-    
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void showFilteredData(Product pd) {
+        if (pd != null) {
+            tableModel.setRowCount(0);
+            Object obj[] = new Object[4];
+            obj[0] = pd.getId();
+            obj[1] = pd.getName();
+            obj[2] = pd.getPrice();
+            obj[3] = pd.getStock();
+            tableModel.addRow(obj);
+        }
+    }
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+
+    }//GEN-LAST:event_searchFieldActionPerformed
 
     private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameFieldActionPerformed
+
+    private void cleanTextFields() {
+        nameField.setText("");
+        priceField.setText("");
+        stockField.setText("");
+    }
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
 
@@ -216,23 +242,44 @@ public class AppUI extends javax.swing.JFrame {
         int stock = Integer.parseInt(stockField.getText());
         inventory.addNewProduct(inventory.createNewProduct(name, price, stock));
         showInventoryData();
-        System.out.println(inventory.getInventoryList());
+        cleanTextFields();
 
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+
         int indexDelete = tableInv.getSelectedRow();
         String id = inventory.getInventoryList().get(indexDelete).getId();
         inventory.deleteProduct(id, true);
         showInventoryData();
+        cleanTextFields();
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void tableInvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInvMouseClicked
+
         int indexUpdate = tableInv.getSelectedRow();
         nameField.setText((String) tableInv.getValueAt(indexUpdate, 1));
-        priceField.setText(Double.toString((double) tableInv.getValueAt(indexUpdate, 2)) );
+        priceField.setText(Double.toString((double) tableInv.getValueAt(indexUpdate, 2)));
         stockField.setText(Integer.toString((int) tableInv.getValueAt(indexUpdate, 3)));
     }//GEN-LAST:event_tableInvMouseClicked
+
+    private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
+
+        int indexUpdate = tableInv.getSelectedRow();
+        String name = nameField.getText();
+        double price = Double.parseDouble(priceField.getText());
+        int stock = Integer.parseInt(stockField.getText());
+        inventory.updateProduct(indexUpdate, inventory.createNewProduct(name, price, stock));
+        showInventoryData();
+        cleanTextFields();
+    }//GEN-LAST:event_updateBtnActionPerformed
+
+    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+
+        String search = searchField.getText();
+        showFilteredData(inventory.findProduct(search));
+
+    }//GEN-LAST:event_searchBtnActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -245,15 +292,15 @@ public class AppUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
     private javax.swing.JButton deleteBtn;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField nameField;
     private javax.swing.JTextField priceField;
+    private javax.swing.JButton searchBtn;
+    private javax.swing.JTextField searchField;
     private javax.swing.JTextField stockField;
     private javax.swing.JTable tableInv;
     private javax.swing.JButton updateBtn;
