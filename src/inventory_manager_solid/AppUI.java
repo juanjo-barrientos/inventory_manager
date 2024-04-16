@@ -1,5 +1,6 @@
 package inventory_manager_solid;
 
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.DefaultTableModel;
 
 public class AppUI extends javax.swing.JFrame {
@@ -37,8 +38,8 @@ public class AppUI extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        deleteBtn = new javax.swing.JButton();
+        updateBtn = new javax.swing.JButton();
         addBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -56,6 +57,11 @@ public class AppUI extends javax.swing.JFrame {
             }
         ));
         tableInv.setAutoscrolls(false);
+        tableInv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableInvMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tableInv);
 
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
@@ -105,13 +111,18 @@ public class AppUI extends javax.swing.JFrame {
 
         jLabel3.setText("Stock:");
 
-        jButton1.setBackground(new java.awt.Color(204, 0, 0));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Delete");
+        deleteBtn.setBackground(new java.awt.Color(204, 0, 0));
+        deleteBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        deleteBtn.setForeground(new java.awt.Color(255, 255, 255));
+        deleteBtn.setText("Delete");
+        deleteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteBtnActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton3.setText("Update");
+        updateBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        updateBtn.setText("Update");
 
         addBtn.setBackground(new java.awt.Color(102, 153, 0));
         addBtn.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -132,9 +143,9 @@ public class AppUI extends javax.swing.JFrame {
                 .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(deleteBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(121, 121, 121)
-                        .addComponent(jButton3)
+                        .addComponent(updateBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addBtn))
                     .addGroup(layout.createSequentialGroup()
@@ -167,8 +178,8 @@ public class AppUI extends javax.swing.JFrame {
                     .addComponent(stockField, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(51, 51, 51)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton3)
+                    .addComponent(deleteBtn)
+                    .addComponent(updateBtn)
                     .addComponent(addBtn))
                 .addGap(0, 77, Short.MAX_VALUE))
         );
@@ -188,6 +199,7 @@ public class AppUI extends javax.swing.JFrame {
         });
 
     }
+    
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
 
@@ -204,7 +216,23 @@ public class AppUI extends javax.swing.JFrame {
         int stock = Integer.parseInt(stockField.getText());
         inventory.addNewProduct(inventory.createNewProduct(name, price, stock));
         showInventoryData();
+        System.out.println(inventory.getInventoryList());
+
     }//GEN-LAST:event_addBtnActionPerformed
+
+    private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
+        int indexDelete = tableInv.getSelectedRow();
+        String id = inventory.getInventoryList().get(indexDelete).getId();
+        inventory.deleteProduct(id, true);
+        showInventoryData();
+    }//GEN-LAST:event_deleteBtnActionPerformed
+
+    private void tableInvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInvMouseClicked
+        int indexUpdate = tableInv.getSelectedRow();
+        nameField.setText((String) tableInv.getValueAt(indexUpdate, 1));
+        priceField.setText(Double.toString((double) tableInv.getValueAt(indexUpdate, 2)) );
+        stockField.setText(Integer.toString((int) tableInv.getValueAt(indexUpdate, 3)));
+    }//GEN-LAST:event_tableInvMouseClicked
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -216,9 +244,8 @@ public class AppUI extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton deleteBtn;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -229,5 +256,6 @@ public class AppUI extends javax.swing.JFrame {
     private javax.swing.JTextField priceField;
     private javax.swing.JTextField stockField;
     private javax.swing.JTable tableInv;
+    private javax.swing.JButton updateBtn;
     // End of variables declaration//GEN-END:variables
 }

@@ -29,8 +29,16 @@ public class Inventory {
     }
 
     public Product deleteProduct(String name) {
-        this.inventoryList = filterProducts(name);
+        
         Product deleteProduct = findProduct(name);
+        this.inventoryList = filterProducts(name);
+        return deleteProduct;
+    }
+    
+    public Product deleteProduct(String id, boolean a) {
+        
+        Product deleteProduct = findProduct(id, a);
+        this.inventoryList = filterProducts(id, a);
         return deleteProduct;
     }
 
@@ -48,11 +56,30 @@ public class Inventory {
 
         return (ArrayList<Product>) pd;
     }
+    
+    public ArrayList<Product> filterProducts(String id, boolean a) {
+
+        List<Product> pd = inventoryList.stream()
+                .filter(product -> !product.getId().equals(id))
+                .collect(Collectors.toList());
+
+        return (ArrayList<Product>) pd;
+    }
+
 
     public Product findProduct(String name) {
 
         List<Product> pd = inventoryList.stream()
                 .filter(product -> product.getName().equals(name))
+                .collect(Collectors.toList());
+
+        return pd.get(0);
+    }
+    
+    public Product findProduct(String id, boolean a) {
+
+        List<Product> pd = inventoryList.stream()
+                .filter(product -> product.getId().equals(id))
                 .collect(Collectors.toList());
 
         return pd.get(0);
