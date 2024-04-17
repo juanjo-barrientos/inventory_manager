@@ -6,9 +6,15 @@
     "stock": 20
   },
   {
-    "id": "8a6eeb4a-a6ea-4b24-946e-ed06c728a19a",
-    "name": "Juguitos",
+    "id": "8fdc37b4-6edf-4624-a0db-d56a32156dcb",
+    "name": "Jugos",
     "price": 1500.0,
     "stock": 40
+  },
+  {
+    "id": "e5166768-aa88-4759-bc2b-d859ba45813f",
+    "name": "Arroz",
+    "price": 2500.0,
+    "stock": 22
   }
 ]

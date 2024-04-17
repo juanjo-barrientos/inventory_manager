@@ -21,7 +21,6 @@ public class Database {
         try (FileWriter fileWriter = new FileWriter("lista_objetos.json")) {
             fileWriter.write(json);
             fileWriter.close();
-            System.out.println("Lista de objetos guardada correctamente en lista_objetos.json");
         } catch (IOException e) {
             System.err.println("Error al guardar la lista de objetos: " + e.getMessage());
         }

@@ -1,5 +1,6 @@
 package inventory_manager_solid;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class AppUI extends javax.swing.JFrame {
@@ -217,6 +218,10 @@ public class AppUI extends javax.swing.JFrame {
         });
     }
 
+    private void showAlert(String alert) {
+        JOptionPane.showMessageDialog(null, alert);
+    }
+
     private void showFilteredData(Product pd) {
         if (pd != null) {
             tableModel.setRowCount(0);
@@ -236,40 +241,60 @@ public class AppUI extends javax.swing.JFrame {
     }
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-        String name = nameField.getText();
-        double price = Double.parseDouble(priceField.getText());
-        int stock = Integer.parseInt(stockField.getText());
-        inventory.addNewProduct(inventory.createNewProduct(name, price, stock));
-        showInventoryData();
-        cleanTextFields();
-        db.saveData(inventory.getInventoryList());
+        try {
+            String name = nameField.getText();
+            double price = Double.parseDouble(priceField.getText());
+            int stock = Integer.parseInt(stockField.getText());
+            inventory.addNewProduct(inventory.createNewProduct(name, price, stock));
+            showInventoryData();
+            cleanTextFields();
+            db.saveData(inventory.getInventoryList());
+        } catch (Exception e) {
+            showAlert("Algo fallo, intente de nuevo");
+        }
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
         int indexDelete = tableInv.getSelectedRow();
-        String id = inventory.getInventoryList().get(indexDelete).getId();
-        inventory.deleteProduct(id, true);
-        showInventoryData();
-        cleanTextFields();
-        db.saveData(inventory.getInventoryList());
+
+        if (indexDelete != -1) {
+            String id = inventory.getInventoryList().get(indexDelete).getId();
+            inventory.deleteProduct(id, true);
+            showInventoryData();
+            cleanTextFields();
+            db.saveData(inventory.getInventoryList());
+        }
+
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void tableInvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInvMouseClicked
         int indexUpdate = tableInv.getSelectedRow();
-        nameField.setText((String) tableInv.getValueAt(indexUpdate, 1));
-        priceField.setText(Double.toString((double) tableInv.getValueAt(indexUpdate, 2)));
-        stockField.setText(Integer.toString((int) tableInv.getValueAt(indexUpdate, 3)));
+
+        if (indexUpdate != -1) {
+            nameField.setText((String) tableInv.getValueAt(indexUpdate, 1));
+            priceField.setText(Double.toString((double) tableInv.getValueAt(indexUpdate, 2)));
+            stockField.setText(Integer.toString((int) tableInv.getValueAt(indexUpdate, 3)));
+        }
+
     }//GEN-LAST:event_tableInvMouseClicked
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
         int indexUpdate = tableInv.getSelectedRow();
-        String name = nameField.getText();
-        double price = Double.parseDouble(priceField.getText());
-        int stock = Integer.parseInt(stockField.getText());
-        inventory.updateProduct(indexUpdate, inventory.createNewProduct(name, price, stock));
-        showInventoryData();
-        cleanTextFields();
-        db.saveData(inventory.getInventoryList());
+
+        if (indexUpdate != -1) {
+            try {
+                String name = nameField.getText();
+                double price = Double.parseDouble(priceField.getText());
+                int stock = Integer.parseInt(stockField.getText());
+                inventory.updateProduct(indexUpdate, inventory.createNewProduct(name, price, stock));
+                showInventoryData();
+                cleanTextFields();
+                db.saveData(inventory.getInventoryList());
+            } catch (Exception e) {
+                showAlert("Algo fallo, intente de nuevo");
+            }
+        }
+
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
