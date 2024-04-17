@@ -5,20 +5,21 @@ import javax.swing.table.DefaultTableModel;
 public class AppUI extends javax.swing.JFrame {
 
     Inventory inventory;
+    Database db;
     DefaultTableModel tableModel = new DefaultTableModel();
 
     public AppUI() {
         initComponents();
     }
 
-    public AppUI(Inventory inventory) {
+    public AppUI(Inventory inventory, Database db) {
         initComponents();
-
         this.inventory = inventory;
+        this.db = db;
+        this.inventory.setInventoryList(db.readData());
         String colums[] = {"ID", "NAME", "PRICE", "STOCK"};
         tableModel.setColumnIdentifiers(colums);
         tableInv.setModel(tableModel);
-
         showInventoryData();
     }
 
@@ -196,6 +197,14 @@ public class AppUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
+
+    }//GEN-LAST:event_searchFieldActionPerformed
+
+    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameFieldActionPerformed
+
     private void showInventoryData() {
         tableModel.setRowCount(0);
         inventory.getInventoryList().forEach(product -> {
@@ -220,15 +229,6 @@ public class AppUI extends javax.swing.JFrame {
         }
     }
 
-
-    private void searchFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFieldActionPerformed
-
-    }//GEN-LAST:event_searchFieldActionPerformed
-
-    private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameFieldActionPerformed
-
     private void cleanTextFields() {
         nameField.setText("");
         priceField.setText("");
@@ -236,27 +236,25 @@ public class AppUI extends javax.swing.JFrame {
     }
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
-
         String name = nameField.getText();
         double price = Double.parseDouble(priceField.getText());
         int stock = Integer.parseInt(stockField.getText());
         inventory.addNewProduct(inventory.createNewProduct(name, price, stock));
         showInventoryData();
         cleanTextFields();
-
+        db.saveData(inventory.getInventoryList());
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-
         int indexDelete = tableInv.getSelectedRow();
         String id = inventory.getInventoryList().get(indexDelete).getId();
         inventory.deleteProduct(id, true);
         showInventoryData();
         cleanTextFields();
+        db.saveData(inventory.getInventoryList());
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void tableInvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableInvMouseClicked
-
         int indexUpdate = tableInv.getSelectedRow();
         nameField.setText((String) tableInv.getValueAt(indexUpdate, 1));
         priceField.setText(Double.toString((double) tableInv.getValueAt(indexUpdate, 2)));
@@ -264,7 +262,6 @@ public class AppUI extends javax.swing.JFrame {
     }//GEN-LAST:event_tableInvMouseClicked
 
     private void updateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateBtnActionPerformed
-
         int indexUpdate = tableInv.getSelectedRow();
         String name = nameField.getText();
         double price = Double.parseDouble(priceField.getText());
@@ -272,13 +269,12 @@ public class AppUI extends javax.swing.JFrame {
         inventory.updateProduct(indexUpdate, inventory.createNewProduct(name, price, stock));
         showInventoryData();
         cleanTextFields();
+        db.saveData(inventory.getInventoryList());
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-
         String search = searchField.getText();
         showFilteredData(inventory.findProduct(search));
-
     }//GEN-LAST:event_searchBtnActionPerformed
 
     public static void main(String args[]) {

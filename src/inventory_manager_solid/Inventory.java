@@ -19,6 +19,11 @@ public class Inventory {
         return inventoryList;
     }
 
+    public void setInventoryList(ArrayList<Product> inventoryList) {
+        this.inventoryList = inventoryList;
+    }
+
+
     public Product createNewProduct(String name, double price, int stock) {
         Product pd = new Product(name, price, stock);
         return pd;
@@ -29,14 +34,12 @@ public class Inventory {
     }
 
     public Product deleteProduct(String name) {
-
         Product deleteProduct = findProduct(name);
         this.inventoryList = filterProducts(name);
         return deleteProduct;
     }
 
     public Product deleteProduct(String id, boolean a) {
-
         Product deleteProduct = findProduct(id, a);
         this.inventoryList = filterProducts(id, a);
         return deleteProduct;
@@ -48,7 +51,6 @@ public class Inventory {
     }
 
     public ArrayList<Product> filterProducts(String name) {
-
         List<Product> pd = inventoryList.stream()
                 .filter(product -> !product.getName().equals(name))
                 .collect(Collectors.toList());
@@ -57,7 +59,6 @@ public class Inventory {
     }
 
     public ArrayList<Product> filterProducts(String id, boolean a) {
-
         List<Product> pd = inventoryList.stream()
                 .filter(product -> !product.getId().equals(id))
                 .collect(Collectors.toList());
@@ -66,7 +67,6 @@ public class Inventory {
     }
 
     public Product findProduct(String name) {
-
         List<Product> pd = inventoryList.stream()
                 .filter(product -> product.getName().equals(name))
                 .collect(Collectors.toList());
@@ -79,7 +79,6 @@ public class Inventory {
     }
 
     public Product findProduct(String id, boolean a) {
-
         List<Product> pd = inventoryList.stream()
                 .filter(product -> product.getId().equals(id))
                 .collect(Collectors.toList());

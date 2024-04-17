@@ -1,0 +1,14 @@
+[
+  {
+    "id": "85cb53a5-f775-4efc-868d-18b2ae3bf102",
+    "name": "Peras",
+    "price": 2000.0,
+    "stock": 20
+  },
+  {
+    "id": "8a6eeb4a-a6ea-4b24-946e-ed06c728a19a",
+    "name": "Juguitos",
+    "price": 1500.0,
+    "stock": 40
+  }
+]

@@ -5,7 +5,8 @@ public class Main {
     public static void main(String[] args) {
 
         Inventory inv = new Inventory();
-        AppUI app = new AppUI(inv);
+        Database db = new Database();
+        AppUI app = new AppUI(inv, db);
 
         app.setVisible(true);
     }
