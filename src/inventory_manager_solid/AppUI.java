@@ -8,6 +8,7 @@ public class AppUI extends javax.swing.JFrame {
     Inventory inventory;
     Database db;
     DefaultTableModel tableModel = new DefaultTableModel();
+    Validator vd = new Validator();
 
     public AppUI() {
         initComponents();
@@ -21,6 +22,8 @@ public class AppUI extends javax.swing.JFrame {
         String colums[] = {"ID", "NAME", "PRICE", "STOCK"};
         tableModel.setColumnIdentifiers(colums);
         tableInv.setModel(tableModel);
+        tableInv.setDefaultEditor(Object.class, null);
+
         showInventoryData();
     }
 
@@ -242,9 +245,15 @@ public class AppUI extends javax.swing.JFrame {
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
         try {
-            String name = nameField.getText();
+            String name = nameField.getText().trim().toUpperCase();
             double price = Double.parseDouble(priceField.getText());
             int stock = Integer.parseInt(stockField.getText());
+            double[] values = {price, stock};
+
+            if (!vd.validateNumbers(values) || !vd.validateString(name, inventory.getInventoryList())) {
+                throw new Exception("Validation error");
+            }
+
             inventory.addNewProduct(inventory.createNewProduct(name, price, stock));
             showInventoryData();
             cleanTextFields();
@@ -283,9 +292,15 @@ public class AppUI extends javax.swing.JFrame {
 
         if (indexUpdate != -1) {
             try {
-                String name = nameField.getText();
+                String name = nameField.getText().trim().toUpperCase();
                 double price = Double.parseDouble(priceField.getText());
                 int stock = Integer.parseInt(stockField.getText());
+                double[] values = {price, stock};
+
+                if (!vd.validateNumbers(values) || !vd.validateString(name, inventory.getInventoryList())) {
+                    throw new Exception("Validation error");
+                }
+
                 inventory.updateProduct(indexUpdate, inventory.createNewProduct(name, price, stock));
                 showInventoryData();
                 cleanTextFields();
@@ -298,8 +313,15 @@ public class AppUI extends javax.swing.JFrame {
     }//GEN-LAST:event_updateBtnActionPerformed
 
     private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
-        String search = searchField.getText();
-        showFilteredData(inventory.findProduct(search));
+        String search = searchField.getText().trim().toUpperCase();
+
+        if (search.isEmpty()) {
+            showInventoryData();
+        } else {
+            showFilteredData(inventory.findProduct(search));
+        }
+
+
     }//GEN-LAST:event_searchBtnActionPerformed
 
     public static void main(String args[]) {

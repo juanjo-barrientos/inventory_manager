@@ -1,20 +1,20 @@
 [
   {
-    "id": "85cb53a5-f775-4efc-868d-18b2ae3bf102",
-    "name": "Peras",
+    "id": "b148c6f4-4a3b-482e-a506-6a028ce94a07",
+    "name": "PERAS",
     "price": 2000.0,
     "stock": 20
   },
   {
-    "id": "8fdc37b4-6edf-4624-a0db-d56a32156dcb",
-    "name": "Jugos",
+    "id": "a7cf31ec-3f21-406b-90ab-7841839b1a87",
+    "name": "JUGOS",
     "price": 1500.0,
     "stock": 40
   },
   {
-    "id": "e5166768-aa88-4759-bc2b-d859ba45813f",
-    "name": "Arroz",
+    "id": "1b4d3188-796f-4b2a-9d6e-fc8d51eaec60",
+    "name": "ARROZ",
     "price": 2500.0,
-    "stock": 22
+    "stock": 23
   }
 ]
